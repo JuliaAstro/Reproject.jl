@@ -1,7 +1,9 @@
 using Reproject
 using Test
-using PyCall
+using Conda, PyCall
 
+ENV["PYTHON"]=""
+Conda.add("reproject")
 rp = pyimport("reproject")
 
 @testset "Reproject.jl" begin
