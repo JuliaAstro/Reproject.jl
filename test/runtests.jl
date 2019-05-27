@@ -3,6 +3,7 @@ using Test
 using Conda, PyCall
 
 ENV["PYTHON"]=""
+Conda.add_channel("astropy")
 Conda.add("reproject")
 rp = pyimport("reproject")
 
