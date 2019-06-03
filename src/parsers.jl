@@ -19,7 +19,7 @@ function parse_input_data(input_data::String; hdu_in = nothing)
 end
 
 function parse_input_data(input_data::FITS; hdu_in = nothing)
-   if isnothing(hdu_in)
+   if hdu_in === nothing
         if length(input_data) > 1
             throw(ArgumentError("More than one HDU is present, please specify which HDU to use with 'hdu_in' option"))
         else
@@ -50,7 +50,7 @@ Parse output projection and returns a WCS object and shape of output.
 - `hdu_number`: specifies HDU number when file name is given as input.
 """
 function parse_output_projection(output_projection::WCSTransform; shape_out = nothing)
-    if isnothing(shape_out)
+    if shape_out === nothing
         throw(ArgumentError("Need to specify shape when specifying output_projection as WCS object"))
     elseif length(shape_out) == 0
         throw(DomainError(shape_out, "The shape of the output image should not be an empty tuple"))
@@ -61,7 +61,7 @@ end
 
 function parse_output_projection(output_projection::ImageHDU; shape_out = nothing)
     wcs_out = WCS.from_header(read_header(output_projection, String))[1]
-    if isnothing(shape_out)
+    if shape_out === nothing
         shape_out = size(output_projection)
     end
     if length(shape_out) == 0
@@ -72,7 +72,7 @@ end
 
 function parse_output_projection(output_projection::String; hdu_number = nothing)
     hdu_list = FITS(output_projection)
-    if isnothing(hdu_number)
+    if hdu_number === nothing
         wcs_out = WCS.from_header(read_header(hdu_list[1], String))[1]
         hdu_number = 1
     else
