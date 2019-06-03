@@ -1,5 +1,14 @@
 """
+    parse_input_data(input_data::ImageHDU)
+    parse_input_data(input_data::String; hdu_in = nothing)
+    parse_input_data(input_data::FITS; hdu_in = nothing)
+
 Parse input data and returns an Array and WCS object.
+
+# Arguments
+- `input_data`: image to reproject which can be name of a FITS file,
+                an ImageHDU or a FITS file. 
+- `hdu_in`: used to set HDU to use when more than one HDU is present. 
 """
 function parse_input_data(input_data::ImageHDU)
     return read(input_data), WCS.from_header(read_header(input_data, String))[1]
@@ -28,7 +37,17 @@ end
 
 
 """
-Parse output projection and returns a WCS object and Shape of output
+    parse_output_projection(output_projection::WCSTransform; shape_out = nothing)
+    parse_output_projection(output_projection::ImageHDU; shape_out = nothing)
+    parse_output_projection(output_projection::String; hdu_number = nothing)
+
+Parse output projection and returns a WCS object and shape of output.
+
+# Arguments
+- `output_projection`: WCS information about the image to be reprojected which can be 
+                       name of a FITS file, an ImageHDU or WCSTransform.
+- `shape_out`: shape of the output image.
+- `hdu_number`: specifies HDU number when file name is given as input.
 """
 function parse_output_projection(output_projection::WCSTransform; shape_out = nothing)
     if isnothing(shape_out)
