@@ -1,7 +1,7 @@
 """
     parse_input_data(input_data::ImageHDU)
-    parse_input_data(input_data::String; hdu_in = nothing)
-    parse_input_data(input_data::FITS; hdu_in = nothing)
+    parse_input_data(input_data::String, hdu_in)
+    parse_input_data(input_data::FITS, hdu_in)
 
 Parse input data and returns an Array and WCS object.
 
@@ -27,9 +27,10 @@ end
 
 
 """
-    parse_output_projection(output_projection::WCSTransform; shape_out = nothing)
-    parse_output_projection(output_projection::ImageHDU; shape_out = nothing)
-    parse_output_projection(output_projection::String; hdu_number = nothing)
+    parse_output_projection(output_projection::WCSTransform, shape_out)
+    parse_output_projection(output_projection::ImageHDU; shape_out)
+    parse_output_projection(output_projection::String, hdu_number)
+    parse_output_projection(output_projection::FITS, hdu_number)
 
 Parse output projection and returns a WCS object and shape of output.
 
