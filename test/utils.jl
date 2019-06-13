@@ -1,3 +1,4 @@
+using Reproject: wcs_to_celestial_frame
 @testset "wcs to celestial frame" begin
     wcs1 = WCSTransform(2;
                        ctype = ["RA---AIR", "DEC--AIR"],
@@ -20,7 +21,7 @@
                        ctype = ["RA---AIR", "DEC--AIR"],
                        radesys = "UNK" 
                       )
-    
+
     @test wcs_to_celestial_frame(wcs1) == "ICRS"
     @test wcs_to_celestial_frame(wcs2) == "FK4"
     @test wcs_to_celestial_frame(wcs3) == "FK5"
@@ -28,4 +29,3 @@
     @test wcs_to_celestial_frame(wcs5) == "ITRS"
     @test wcs_to_celestial_frame(wcs6) == "UNK"
 end
-
