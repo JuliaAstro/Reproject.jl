@@ -10,4 +10,5 @@ rp = pyimport("reproject")
 
 @testset "Reproject.jl" begin
     include("parsers.jl")
+    include("utils.jl")
 end
