@@ -1,5 +1,3 @@
-const UNDEFINED    = 987654321.0e99        # from WCS.jl
-
 """
     wcs_to_celestial_frame(wcs::WCSTransform)
 
@@ -8,12 +6,6 @@ The reference frame supported in Julia are FK5, ICRS and Galactic.
 """
 function wcs_to_celestial_frame(wcs::WCSTransform)
     radesys = wcs.radesys
-    
-    if wcs.equinox != UNDEFINED
-        equinox = wcs.equinox
-    else
-        equinox = nothing
-    end
     
     xcoord = wcs.ctype[1][1:4]
     ycoord = wcs.ctype[2][1:4]
