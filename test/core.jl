@@ -8,11 +8,11 @@
         download("https://astropy.stsci.edu/data/galactic_center/gc_msx_e.fits", "data/gc_msx_e.fits")
     end
     
-    imgin = FITS("gc_msx_e.fits")         # project this
-    imgout = FITS("gc_2mass_k.fits")        # into this coordinate
+    imgin = FITS("data/gc_msx_e.fits")         # project this
+    imgout = FITS("data/gc_2mass_k.fits")        # into this coordinate
     
-    hdu1 = astropy.io.fits.open("gc_2mass_k.fits")[1]
-    hdu2 = astropy.io.fits.open("gc_msx_e.fits")[1]
+    hdu1 = astropy.io.fits.open("data/gc_2mass_k.fits")[1]
+    hdu2 = astropy.io.fits.open("data/gc_msx_e.fits")[1]
     
     function check_diff(arr1, arr2)
         diff = 1e-3
