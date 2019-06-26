@@ -16,7 +16,7 @@ Reprojects image data to a new projection using interpolation.
 - `hdu_in`: Used to specify HDU number when giving input as FITS or name of FITS file.
 - `hud_out:` Used to specify HDU number when giving output projection as FITS or name of FITS file.
 """
-function reproject(input_data, output_projection; shape_out = nothing, order::Int = 1, hdu_in::Int = 1, hdu_out::Int = 1)::Tuple{Array{Float64,2},BitArray{2}}
+function reproject(input_data, output_projection; shape_out = nothing, order::Int = 1, hdu_in::Int = 1, hdu_out::Int = 1)
     if input_data isa ImageHDU
         array_in, wcs_out = parse_input_data(input_data)
     else
@@ -53,7 +53,7 @@ function reproject(input_data, output_projection; shape_out = nothing, order::In
             elseif type_in == "FK5"
                 coord_in = FK5Coords{wcs_in.equinox}(deg2rad(world_coord_in[1]), deg2rad(world_coord_in[2]))
             else
-                throw(ArgumentError("Unsupported input WCS coordinate type"))
+                throw(ArgumentError("Unsupported output WCS coordinate type"))
             end
 
             if type_out == "ICRS"
@@ -63,7 +63,7 @@ function reproject(input_data, output_projection; shape_out = nothing, order::In
             elseif type_out == "FK5"
                 coord_out = convert(FK5Coords{wcs_out.equinox}, coord_in)
             else
-                throw(ArgumentError("Unsupported output WCS coordinate type"))
+                throw(ArgumentError("Unsupported input WCS coordinate type"))
             end
 
             pix_coord_out = world_to_pix(wcs_out, [rad2deg(lon(coord_out)), rad2deg(lat(coord_out))])
@@ -83,7 +83,7 @@ end
 
 Returns an interpolator with the given array and order of interpolation.
 """
-function interpolator(array_in::AbstractArray{T}, order::Int) where {T}
+function interpolator(array_in::AbstractArray, order::Int)
    if order == 0
         itp = interpolate(array_in, BSpline(Constant()))
     elseif order == 1

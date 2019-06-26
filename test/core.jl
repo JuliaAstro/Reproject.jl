@@ -34,4 +34,26 @@
     @test check_diff(reproject(imgin[1], imgout[1], shape_out = (1000,1000))[1],
             rp.reproject_interp(hdu2, astropy.wcs.WCS(hdu1.header), shape_out = (1000,1000))[1]) == true
     
+    wcs = WCSTransform(2; ctype = ["RA---AIR", "DEC--AIR"], radesys = "UNK")
+    @test_throws ArgumentError reproject(imgin, wcs, shape_out = (100,100))
+
+    fname = tempname() * ".fits"
+    f = FITS(fname, "w")
+    inhdr = FITSHeader(["CTYPE1", "CTYPE2", "RADESYS", "FLTKEY", "INTKEY", "BOOLKEY", "STRKEY", "COMMENT",
+                        "HISTORY"],
+                       ["RA---TAN", "DEC--TAN", "UNK", 1.0, 1, true, "string value", nothing, nothing],
+                       ["",
+                        "",
+                        "",
+                        "floating point keyword",
+                        "",
+                        "boolean keyword",
+                        "string value",
+                        "this is a comment",
+                        "this is a history"])
+
+    indata = reshape(Float32[1:100;], 5, 20)
+    write(f, indata; header=inhdr)
+    @test_throws ArgumentError reproject(f[1], imgin, shape_out = (100,100))
+    close(f)
 end
