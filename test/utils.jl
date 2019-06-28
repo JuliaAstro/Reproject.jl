@@ -5,21 +5,21 @@ using Reproject: wcs_to_celestial_frame
                        )
     wcs2 = WCSTransform(2;
                        ctype = ["RA---AIR", "DEC--AIR"],
-                       equinox = 1888.67 
+                       equinox = 1888.67
                        )
     wcs3 = WCSTransform(2;
                        ctype = ["RA---AIR", "DEC--AIR"],
-                       equinox = 2000 
+                       equinox = 2000
                        )
     wcs4 = WCSTransform(2;
-                       ctype = ["GLON--", "GLAT--"], 
+                       ctype = ["GLON--", "GLAT--"],
                        )
     wcs5 = WCSTransform(2;
                        ctype = ["TLON", "TLAT"],
                       )
     wcs6 = WCSTransform(2;
                        ctype = ["RA---AIR", "DEC--AIR"],
-                       radesys = "UNK" 
+                       radesys = "UNK"
                       )
 
     @test wcs_to_celestial_frame(wcs1) == "ICRS"

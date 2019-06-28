@@ -7,8 +7,8 @@ Parse input data and returns an Array and WCS object.
 
 # Arguments
 - `input_data`: image to reproject which can be name of a FITS file,
-                an ImageHDU or a FITS file. 
-- `hdu_in`: used to set HDU to use when more than one HDU is present. 
+                an ImageHDU or a FITS file.
+- `hdu_in`: used to set HDU to use when more than one HDU is present.
 """
 function parse_input_data(input_data::ImageHDU)
     return read(input_data), WCS.from_header(read_header(input_data, String))[1]
@@ -35,7 +35,7 @@ end
 Parse output projection and returns a WCS object and shape of output.
 
 # Arguments
-- `output_projection`: WCS information about the image to be reprojected which can be 
+- `output_projection`: WCS information about the image to be reprojected which can be
                        name of a FITS file, an ImageHDU or WCSTransform.
 - `shape_out`: shape of the output image.
 - `hdu_number`: specifies HDU number when file name is given as input.
@@ -65,13 +65,12 @@ end
 
 function parse_output_projection(output_projection::FITS, hdu_number)
     wcs_out = WCS.from_header(read_header(output_projection[hdu_number], String))[1]
-    
+
     if output_projection[hdu_number] isa ImageHDU
         shape_out = size(output_projection[hdu_number])
-    else    
+    else
         throw(ArgumentError("Given FITS file doesn't have ImageHDU"))
     end
-    
+
     return wcs_out, shape_out
 end
-

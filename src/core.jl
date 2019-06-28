@@ -22,25 +22,25 @@ function reproject(input_data, output_projection; shape_out = nothing, order::In
     else
         array_in, wcs_out = parse_input_data(input_data, hdu_in)
     end
-    
+
     if output_projection isa FITS || output_projection isa String
         wcs_in, shape_out = parse_output_projection(output_projection, hdu_out)
     else
         wcs_in, shape_out = parse_output_projection(output_projection, shape_out)
     end
-    
+
     type_in = wcs_to_celestial_frame(wcs_in)
     type_out = wcs_to_celestial_frame(wcs_out)
-    
+
     if type_in == type_out && shape_out === nothing
         return array_in
     end
-    
+
     img_out = fill(NaN, shape_out)
-    
+
     itp = interpolator(array_in, order)
     shape_in = size(array_in)
-    
+
     for i in 1:shape_out[1]
         for j in 1:shape_out[2]
             pix_coord_in = [float(i), float(j)]
@@ -68,12 +68,12 @@ function reproject(input_data, output_projection; shape_out = nothing, order::In
 
             pix_coord_out = world_to_pix(wcs_out, [rad2deg(lon(coord_out)), rad2deg(lat(coord_out))])
 
-            if 1 <= pix_coord_out[1] <= shape_in[1] && 1 <= pix_coord_out[2] <= shape_in[2] 
+            if 1 <= pix_coord_out[1] <= shape_in[1] && 1 <= pix_coord_out[2] <= shape_in[2]
                 img_out[i,j] = itp(pix_coord_out[1], pix_coord_out[2])
             end
         end
     end
-    
+
     return img_out, (!isnan).(img_out)
 end
 
@@ -91,6 +91,6 @@ function interpolator(array_in::AbstractArray, order::Int)
     else
         itp = interpolate(array_in, BSpline(Quadratic(InPlace(OnCell()))))
     end
-    
+
     return itp
 end

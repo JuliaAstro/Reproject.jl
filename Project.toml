@@ -1,6 +1,6 @@
 name = "Reproject"
 uuid = "d1dcc2e6-806e-11e9-2897-3f99785db2ae"
-authors = ["Mosè Giordano"]
+authors = ["Mosè Giordano", "Rohit Kumar"]
 version = "0.1.0"
 
 [deps]
