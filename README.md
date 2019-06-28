@@ -1,7 +1,7 @@
 # Reproject
 
-[![Build Status](https://travis-ci.com/giordano/Reproject.jl.svg?branch=master)](https://travis-ci.com/giordano/Reproject.jl)
-[![Coveralls](https://coveralls.io/repos/github/giordano/Reproject.jl/badge.svg?branch=master)](https://coveralls.io/github/giordano/Reproject.jl?branch=master)
+[![Build Status](https://travis-ci.com/JuliaAstro/Reproject.jl.svg?branch=master)](https://travis-ci.com/JuliaAstro/Reproject.jl)
+[![Coveralls](https://coveralls.io/repos/github/JuliaAstro/Reproject.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaAstro/Reproject.jl?branch=master)
 
 Implementation in [Julia](https://julialang.org/) of the
 [`reproject`](https://github.com/astropy/reproject) package by Thomas
