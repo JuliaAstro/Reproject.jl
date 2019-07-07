@@ -1,18 +1,29 @@
+function download_dep(orig, dest, hash)
+    dest_file = joinpath("data", dest)
+    if isfile(dest_file)
+        dest_hash = open(dest_file, "r") do f
+            bytes2hex(sha256(f))
+        end
+        if dest_hash == hash
+            return nothing
+        end
+    end
+    mkpath("data")
+    download(orig, dest_file)
+    return nothing
+end
+
 @testset "reproject-core" begin
-    if !isfile("data/gc_2mass_k.fits")
-        mkpath("data")
-        download("https://astropy.stsci.edu/data/galactic_center/gc_2mass_k.fits", "data/gc_2mass_k.fits")
-    end
-    if !isfile("data/gc_msx_e.fits")
-        mkpath("data")
-        download("https://astropy.stsci.edu/data/galactic_center/gc_msx_e.fits", "data/gc_msx_e.fits")
-    end
+    download_dep("https://astropy.stsci.edu/data/galactic_center/gc_2mass_k.fits", "gc_2mass_k.fits",
+                 "763ef344df3ac8fa80ff46f00ca1ec59946ca3f99502562d6fcfb73320b1cec3")
+    download_dep("https://astropy.stsci.edu/data/galactic_center/gc_msx_e.fits", "gc_msx_e.fits",
+                 "3687fb3763911825f981e74b6a9b82c0e618f7e592b1e0cb17e2c63164e28cd6")
 
-    imgin = FITS("data/gc_msx_e.fits")         # project this
-    imgout = FITS("data/gc_2mass_k.fits")        # into this coordinate
+    imgin = FITS(joinpath("data", "gc_msx_e.fits"))    # project this
+    imgout = FITS(joinpath("data", "gc_2mass_k.fits")) # into this coordinate
 
-    hdu1 = astropy.io.fits.open("data/gc_2mass_k.fits")[1]
-    hdu2 = astropy.io.fits.open("data/gc_msx_e.fits")[1]
+    hdu1 = astropy.io.fits.open(joinpath("data", "gc_2mass_k.fits"))[1]
+    hdu2 = astropy.io.fits.open(joinpath("data", "gc_msx_e.fits"))[1]
 
     function check_diff(arr1, arr2)
         diff = 1e-3
