@@ -11,6 +11,9 @@ matrix:
   allow_failures:
     - julia: nightly
   fast_finish: true
+cache:
+  directories:
+  - /home/travis/build/$TRAVIS_REPO_SLUG/test/data
 notifications:
   email: false
 after_success:
