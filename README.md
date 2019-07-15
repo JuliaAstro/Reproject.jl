@@ -56,9 +56,11 @@ julia> output_projection = FITS("gc_2mass_k.fits")
 julia> result = reproject(input_data, output_projection, shape_out = (1000,1000), order = 2, hdu_in = 1, hdu_out = 1)
 ```
 **Input Image:**
+
 <img name="community" src="Images/input.png"/>
 
 **Output:**
+
 <img name="community" src="Images/output.png"/>
 
 Test files can be obtained from [here](https://astropy.stsci.edu/data/).
