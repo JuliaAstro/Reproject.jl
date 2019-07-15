@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.com/JuliaAstro/Reproject.jl.svg?branch=master)](https://travis-ci.com/JuliaAstro/Reproject.jl)
 [![Coveralls](https://coveralls.io/repos/github/JuliaAstro/Reproject.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaAstro/Reproject.jl?branch=master)
+[![GitHub release](https://img.shields.io/github/release/JuliaAstro/Reproject.jl.svg)](https://github.com/JuliaAstro/Reproject.jl/releases/)
+[![HitCount](http://hits.dwyl.io/JuliaAstro/Reproject.jl.svg)](http://hits.dwyl.io/JuliaAstro/Reproject.jl)
 
 Implementation in [Julia](https://julialang.org/) of the
 [`reproject`](https://github.com/astropy/reproject) package by Thomas
