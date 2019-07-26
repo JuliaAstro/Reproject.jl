@@ -37,7 +37,7 @@ function reproject(input_data, output_projection; shape_out = nothing, order::In
     end
 
     img_out = fill(NaN, shape_out)
-
+    array_in = pad_edges(array_in)
     itp = interpolator(array_in, order)
     shape_in = size(array_in)
 
@@ -68,8 +68,8 @@ function reproject(input_data, output_projection; shape_out = nothing, order::In
 
             pix_coord_out = world_to_pix(wcs_out, [rad2deg(lon(coord_out)), rad2deg(lat(coord_out))])
 
-            if 1 <= pix_coord_out[1] <= shape_in[1] && 1 <= pix_coord_out[2] <= shape_in[2]
-                img_out[i,j] = itp(pix_coord_out[1], pix_coord_out[2])
+            if 0.5 <= pix_coord_out[1] <= shape_in[1] - 1 && 0.5 <= pix_coord_out[2] <= shape_in[2] - 1
+                img_out[i,j] = itp(pix_coord_out[1] + 1, pix_coord_out[2] + 1)
             end
         end
     end
