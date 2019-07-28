@@ -25,10 +25,10 @@ end
     hdu1 = astropy.io.fits.open(joinpath("data", "gc_2mass_k.fits"))[1]
     hdu2 = astropy.io.fits.open(joinpath("data", "gc_msx_e.fits"))[1]
 
-    @test isapprox(reproject(imgin, imgout, order = 0)[1]', rp.reproject_interp(hdu2, hdu1.header, order = 0)[1], nans = true, atol = 1e-4)
-    @test isapprox(reproject(imgout, imgin, order = 0)[1]', rp.reproject_interp(hdu1, hdu2.header, order = 0)[1], nans = true, atol = 1e-3)
-    @test isapprox(reproject(imgin, imgout, order = 1)[1]', rp.reproject_interp(hdu2, hdu1.header, order = 1)[1], nans = true, atol = 1e-4)
-    @test isapprox(reproject(imgin, imgout, order = 2)[1]', rp.reproject_interp(hdu2, hdu1.header, order = 2)[1], nans = true, atol = 1e-4)
+    @test isapprox(reproject(imgin, imgout, order = 0)[1]', rp.reproject_interp(hdu2, hdu1.header, order = 0)[1], nans = true, rtol = 1e-4)
+    @test isapprox(reproject(imgout, imgin, order = 0)[1]', rp.reproject_interp(hdu1, hdu2.header, order = 0)[1], nans = true, rtol = 1e-3)
+    @test isapprox(reproject(imgin, imgout, order = 1)[1]', rp.reproject_interp(hdu2, hdu1.header, order = 1)[1], nans = true, rtol = 1e-4)
+    @test isapprox(reproject(imgin, imgout, order = 2)[1]', rp.reproject_interp(hdu2, hdu1.header, order = 2)[1], nans = true, rtol = 1e-4)
     @test isapprox(reproject(imgin[1], imgout[1], shape_out = (1000,1000))[1]',
             rp.reproject_interp(hdu2, astropy.wcs.WCS(hdu1.header), shape_out = (1000,1000))[1], nans = true, atol = 1e-4)
 
