@@ -20,3 +20,18 @@ function wcs_to_celestial_frame(wcs::WCSTransform)
 
     return radesys
 end
+
+"""
+    pad_edges(array_in::Matrix{T}) where {T}
+
+Pads a given array and creates a border with edge elements.
+"""
+function pad_edges(array_in::Matrix{T}) where {T}
+    image = Matrix{T}(undef, size(array_in)[1] + 2, size(array_in)[2] + 2)
+    image[2:end-1,2:end-1] = array_in
+    image[2:end-1,1] = array_in[:,1]
+    image[2:end-1,end] = array_in[:,end]
+    image[1,:] = image[2,:]
+    image[end,:] = image[end-1,:]
+    return image
+end
