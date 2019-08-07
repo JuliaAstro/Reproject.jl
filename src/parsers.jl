@@ -1,5 +1,6 @@
 """
     parse_input_data(input_data::ImageHDU)
+    parse_input_data(input_data::Tuple{AbstractArray, WCSTransform})
     parse_input_data(input_data::String, hdu_in)
     parse_input_data(input_data::FITS, hdu_in)
 
@@ -12,6 +13,10 @@ Parse input data and returns an Array and WCS object.
 """
 function parse_input_data(input_data::ImageHDU)
     return read(input_data), WCS.from_header(read_header(input_data, String))[1]
+end
+
+function parse_input_data(input_data::Tuple{AbstractArray, WCSTransform})
+    return input_data[1], input_data[2]
 end
 
 function parse_input_data(input_data::String, hdu_in)

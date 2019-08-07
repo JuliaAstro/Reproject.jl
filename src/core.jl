@@ -5,7 +5,7 @@ Reprojects image data to a new projection using interpolation.
 
 # Arguments
 - `input_data`: Image data which is being reprojected.
-                It can be an ImageHDU, FITS object or name of a FITS file.
+                It can be an ImageHDU, FITS object, name of a FITS file or a tuple of image matrix and WCSTransform.
 - `output_projection`: Frame in which data is reprojected.
                        Frame can be taken from WCSTransform object, ImageHDU, FITS or name of FITS file.
 - `shape_out`: Shape of image after reprojection.
@@ -17,7 +17,7 @@ Reprojects image data to a new projection using interpolation.
 - `hud_out:` Used to specify HDU number when giving output projection as FITS or name of FITS file.
 """
 function reproject(input_data, output_projection; shape_out = nothing, order::Int = 1, hdu_in::Int = 1, hdu_out::Int = 1)
-    if input_data isa ImageHDU
+    if input_data isa ImageHDU || input_data isa Tuple{AbstractArray, WCSTransform}
         array_in, wcs_out = parse_input_data(input_data)
     else
         array_in, wcs_out = parse_input_data(input_data, hdu_in)
