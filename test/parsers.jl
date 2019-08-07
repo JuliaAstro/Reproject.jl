@@ -21,6 +21,18 @@ using Reproject: parse_input_data, parse_output_projection
         @test result[2] isa WCSTransform
     end
 
+    @testset "data matrix and WCSTransform tuple" begin
+        wcs = WCSTransform(2;
+                          cdelt = [-0.066667, 0.066667],
+                          ctype = ["RA---AIR", "DEC--AIR"],
+                          crpix = [-234.75, 8.3393],
+                          crval = [0., -90],
+                          pv    = [(2, 1, 45.0)])
+        result = parse_input_data((indata, wcs))
+        @test result[1] isa Array
+        @test result[2] isa WCSTransform
+    end
+
     @testset "Single HDU FITS file" begin
         result = parse_input_data(f, 1)
         @test result[1] isa Array
