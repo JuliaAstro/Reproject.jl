@@ -14,9 +14,9 @@ function download_dep(orig, dest, hash)
 end
 
 @testset "reproject-core" begin
-    download_dep("https://astropy.stsci.edu/data/galactic_center/gc_2mass_k.fits", "gc_2mass_k.fits",
+    download_dep("https://www.astropy.org/astropy-data/galactic_center/gc_2mass_k.fits", "gc_2mass_k.fits",
                  "763ef344df3ac8fa80ff46f00ca1ec59946ca3f99502562d6fcfb73320b1cec3")
-    download_dep("https://astropy.stsci.edu/data/galactic_center/gc_msx_e.fits", "gc_msx_e.fits",
+    download_dep("https://www.astropy.org/astropy-data/galactic_center/gc_msx_e.fits", "gc_msx_e.fits",
                  "3687fb3763911825f981e74b6a9b82c0e618f7e592b1e0cb17e2c63164e28cd6")
 
     imgin = FITS(joinpath("data", "gc_msx_e.fits"))    # project this
