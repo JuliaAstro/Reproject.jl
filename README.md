@@ -48,7 +48,7 @@ Example
 ```
 julia> using Reproject, FITSIO
 
-julia> input_data = FITS("gc_msx_e.fits)
+julia> input_data = FITS("gc_msx_e.fits")
 
 julia> output_projection = FITS("gc_2mass_k.fits")
 
@@ -62,7 +62,7 @@ julia> result = reproject(input_data, output_projection, shape_out = (1000,1000)
 
 <img name="community" src="Images/output.png"/>
 
-Test files can be obtained from [here](https://astropy.stsci.edu/data/).
+Test files can be obtained from [here](https://www.astropy.org/astropy-data/).
 
 Related Packages
 -------
