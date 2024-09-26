@@ -14,7 +14,7 @@ Reprojects image data to a new projection using interpolation.
            1: Linear
            2: Quadratic
 - `hdu_in`: Used to specify HDU number when giving input as FITS or name of FITS file.
-- `hud_out:` Used to specify HDU number when giving output projection as FITS or name of FITS file.
+- `hdu_out:` Used to specify HDU number when giving output projection as FITS or name of FITS file.
 """
 function reproject(input_data, output_projection; shape_out = nothing, order::Int = 1, hdu_in::Int = 1, hdu_out::Int = 1)
     if input_data isa ImageHDU || input_data isa Tuple{AbstractArray, WCSTransform}
