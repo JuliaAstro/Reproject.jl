@@ -48,7 +48,7 @@ Example
 ```
 julia> using Reproject, FITSIO
 
-julia> input_data = FITS("gc_msx_e.fits)
+julia> input_data = FITS("gc_msx_e.fits")
 
 julia> output_projection = FITS("gc_2mass_k.fits")
 
