@@ -1,8 +1,10 @@
 # Reproject
 
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://juliaastro.org/Reproject/stable/)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliaastro.org/Reproject.jl/dev/)
+
 [![CI](https://github.com/JuliaAstro/Reproject.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/JuliaAstro/Reproject.jl/actions/workflows/ci.yml)
-[![Coveralls](https://coveralls.io/repos/github/JuliaAstro/Reproject.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaAstro/Reproject.jl?branch=master)
-[![GitHub release](https://img.shields.io/github/release/JuliaAstro/Reproject.jl.svg)](https://github.com/JuliaAstro/Reproject.jl/releases/)
+[![codecov](https://codecov.io/gh/juliaastro/Reproject.jl/graph/badge.svg?token=FuRiCunNhA)](https://codecov.io/gh/juliaastro/Reproject.jl)
 
 Implementation in [Julia](https://julialang.org/) of the
 [`reproject`](https://github.com/astropy/reproject) package by Thomas
@@ -13,8 +15,8 @@ This package can be used to reproject Astronomical Images from one world coordin
 Installation
 -------
 
-`Reproject.jl` is avilable for Julia 1.0 and later versions and can be installed with [Julia built-in package manager](https://docs.julialang.org/en/v1/stdlib/Pkg/).
-`julia> Pkg.add("Reproject")`
+`Reproject.jl` is avilable for Julia 1.0 and later versions and can be installed with [Julia's built-in package manager](https://docs.julialang.org/en/v1/stdlib/Pkg/).
+`pkg> add Reproject`
 
 Usage
 -------
@@ -34,9 +36,9 @@ Reprojecting Images
 
 To reproject Astronomical Images, primary requirements are Image data (2D Matrix), world cordinate frame of input Image and required output frame in which it needs to be reprojected. 
 
-The Image data and input frame is given together as an [ImageHDU](http://juliaastro.github.io/FITSIO.jl/latest/index.html) or [FITS](https://github.com/JuliaAstro/FITSIO.jl) file or name of the FITS file in `input_data`. A keyword argument `hdu_in` can be given while using FITS or FITS file name to specify specific HDU in FITS file.
+The Image data and input frame is given together as an [ImageHDU](http://juliaastro.org/FITSIO) or [FITS](https://github.com/JuliaAstro/FITSIO.jl) file or name of the FITS file in `input_data`. A keyword argument `hdu_in` can be given while using FITS or FITS file name to specify specific HDU in FITS file.
 
-The `output_projection` is the output world coordinate frame and needs to be a a [WCSTransform](https://github.com/JuliaAstro/WCS.jl) or an [ImageHDU](http://juliaastro.github.io/FITSIO.jl/latest/index.html) or [FITS](https://github.com/JuliaAstro/FITSIO.jl) file or name of the FITS file. A keyword argument `hdu_out` can be given while using FITS or FITS file name to specify specific HDU in FITS file.
+The `output_projection` is the output world coordinate frame and needs to be a a [WCSTransform](https://github.com/JuliaAstro/WCS.jl) or an [ImageHDU](http://juliaastro.org/FITSIO) or [FITS](https://github.com/JuliaAstro/FITSIO.jl) file or name of the FITS file. A keyword argument `hdu_out` can be given while using FITS or FITS file name to specify specific HDU in FITS file.
 WCS information is extracted from header when ImageHDU or FITS file is given as `output_projection`.
 
 Order of Interpolation can be specified by keyword `order` (i.e 0, 1(default), 2). 
