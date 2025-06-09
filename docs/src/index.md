@@ -34,9 +34,9 @@ Reprojecting Images
 
 To reproject Astronomical Images, primary requirements are Image data (2D Matrix), world cordinate frame of input Image and required output frame in which it needs to be reprojected.
 
-The Image data and input frame is given together as an [ImageHDU](http://juliaastro.github.io/FITSIO.jl/latest/index.html) or [FITS](https://github.com/JuliaAstro/FITSIO.jl) file or name of the FITS file in `input_data`. A keyword argument `hdu_in` can be given while using FITS or FITS file name to specify specific HDU in FITS file.
+The Image data and input frame is given together as an [ImageHDU](http://juliaastro.org/FITSIO) or [FITS](https://github.com/JuliaAstro/FITSIO.jl) file or name of the FITS file in `input_data`. A keyword argument `hdu_in` can be given while using FITS or FITS file name to specify specific HDU in FITS file.
 
-The `output_projection` is the output world coordinate frame and needs to be a a [WCSTransform](https://github.com/JuliaAstro/WCS.jl) or an [ImageHDU](http://juliaastro.github.io/FITSIO.jl/latest/index.html) or [FITS](https://github.com/JuliaAstro/FITSIO.jl) file or name of the FITS file. A keyword argument `hdu_out` can be given while using FITS or FITS file name to specify specific HDU in FITS file.
+The `output_projection` is the output world coordinate frame and needs to be a a [WCSTransform](https://github.com/JuliaAstro/WCS.jl) or an [ImageHDU](http://juliaastro.org/FITSIO) or [FITS](https://github.com/JuliaAstro/FITSIO.jl) file or name of the FITS file. A keyword argument `hdu_out` can be given while using FITS or FITS file name to specify specific HDU in FITS file.
 WCS information is extracted from header when ImageHDU or FITS file is given as `output_projection`.
 
 Order of Interpolation can be specified by keyword `order` (i.e 0, 1(default), 2).
