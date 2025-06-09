@@ -19,6 +19,6 @@ makedocs(;
 
 deploydocs(;
     repo = "github.com/JuliaAstro/Reproject.jl.git",
-    push_preview = true
+    push_preview = true,
     versions = ["stable" => "v^", "v#.#"], # Restrict to minor releases
 )
