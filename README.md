@@ -47,14 +47,25 @@ The dimensions of output Image can be given by keyword `shape_out`. This can be 
 
 Example
 -------
-```
+
+```julia-repl
 julia> using Reproject, FITSIO
 
-julia> input_data = FITS("gc_msx_e.fits")
+julia> input_data = FITS("gc_msx_e.fits");
 
-julia> output_projection = FITS("gc_2mass_k.fits")
+julia> output_projection = FITS("gc_2mass_k.fits");
 
-julia> result = reproject(input_data, output_projection, shape_out = (1000,1000), order = 2, hdu_in = 1, hdu_out = 1)
+julia> result, footprint = reproject(input_data, output_projection, shape_out = (1000,1000), order = 2, hdu_in = 1, hdu_out = 1);
+
+julia> close(input_data); close(output_projection)
+```
+
+Remember to `close` any `FITS` handles you open once you are done with them — an open
+handle keeps the file locked on Windows. Alternatively, pass the file names directly
+and `reproject` will open and close the files for you:
+
+```julia-repl
+julia> result, footprint = reproject("gc_msx_e.fits", "gc_2mass_k.fits", shape_out = (1000,1000), order = 2)
 ```
 **Input Image:**
 
