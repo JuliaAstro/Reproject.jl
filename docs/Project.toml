@@ -4,6 +4,3 @@ Reproject = "d1dcc2e6-806e-11e9-2897-3f99785db2ae"
 
 [compat]
 Documenter = "1"
-
-[sources]
-Reproject = {path = ".."}
