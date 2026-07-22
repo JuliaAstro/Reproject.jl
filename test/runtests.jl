@@ -3,6 +3,7 @@ using Test
 using PythonCall
 using FITSIO, WCS
 using SHA: sha256
+using Downloads: download
 
 rp = pyimport("reproject")
 astropy = pyimport("astropy")
