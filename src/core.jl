@@ -66,7 +66,7 @@ function reproject(input_data, output_projection; shape_out = nothing, order::In
                 throw(ArgumentError("Unsupported input WCS coordinate type"))
             end
 
-            pix_coord_out = world_to_pix(wcs_out, [rad2deg(lon(coord_out)), rad2deg(lat(coord_out))])
+            pix_coord_out = world_to_pix(wcs_out, [rad2deg(SkyCoords.lon(coord_out)), rad2deg(SkyCoords.lat(coord_out))])
 
             if 0.5 <= pix_coord_out[1] <= shape_in[1] - 1.5 && 0.5 <= pix_coord_out[2] <= shape_in[2] - 1.5
                 img_out[i,j] = itp(pix_coord_out[1] + 1, pix_coord_out[2] + 1)
