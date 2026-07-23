@@ -20,9 +20,9 @@ julia> result, footprint = reproject(input_data, output_projection)
 
 To reproject astronomical images, primary requirements are image data (2D Matrix), world coordinate frame of the input image, and the required output frame in which it needs to be reprojected.
 
-The image data and input frame is given together as a [`FITSFiles.HDU`](@extref), a vector of HDUs as returned by [`FITSFiles.fits`](@extref FITSFiles.fits-Tuple{IO}), or path to the FITS file in `input_data`. A keyword argument `hdu_in` can be given while using a vector of HDUs or FITS file name to specify the specific HDU in the FITS file.
+The image data and input frame is given together as a [`FITSFiles.HDU`](@extref), a vector of HDUs as returned by [`FITSFiles.fits`](@extref FITSFiles.fits-Tuple{IO}), or path to the FITS file in `input_data`. A keyword argument `hdu_in` can be given while using a vector of HDUs or FITS file name to select the HDU in the FITS file, either by its 1-based index or by its `EXTNAME`.
 
-The `output_projection` is the output world coordinate frame. It needs to be a [`FITSWCS.WCSTransform`](https://github.com/JuliaAstro/FITSWCS.jl), a [FITSFiles.HDU](@extref), a vector of HDUs, or the path to the FITS file. A keyword argument `hdu_out` can be given while using a vector of HDUs or FITS file name to specify the specific HDU in the FITS file. WCS information is extracted from the header when an HDU or FITS file is given as `output_projection`.
+The `output_projection` is the output world coordinate frame. It needs to be a [`FITSWCS.WCSTransform`](https://github.com/JuliaAstro/FITSWCS.jl), a [FITSFiles.HDU](@extref), a vector of HDUs, or the path to the FITS file. A keyword argument `hdu_out` can be given while using a vector of HDUs or FITS file name to select the HDU in the FITS file, either by its 1-based index or by its `EXTNAME`. WCS information is extracted from the header when an HDU or FITS file is given as `output_projection`.
 
 The order of the interpolation used can be specified by the `order` keyword (i.e., 0, 1 (default), 2). The dimensions of the output image can be given by the `shape_out` keyword. This can be used to change resolution.
 

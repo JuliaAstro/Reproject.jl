@@ -42,7 +42,7 @@ using Reproject: parse_input_data, parse_output_projection
         @test result[2] isa WCSTransform
     end
 
-    write(fname, [hdu, HDU(Image, indata, inhdr)])
+    write(fname, [hdu, HDU(Image, indata, [Card("EXTNAME", "SCI"); inhdr])])
 
     @testset "Multiple HDU FITS file" begin
         result = parse_input_data(fits(fname), 2)
@@ -52,6 +52,20 @@ using Reproject: parse_input_data, parse_output_projection
         result = parse_input_data(fname, 1)
         @test result[1] isa Array
         @test result[2] isa WCSTransform
+    end
+
+    @testset "HDU selection by EXTNAME" begin
+        result = parse_input_data(fname, "SCI")
+        @test result[1] isa Array
+        @test result[2] isa WCSTransform
+
+        result = parse_input_data(fits(fname), :SCI)
+        @test result[1] isa Array
+        @test result[2] isa WCSTransform
+
+        result = parse_output_projection(fname, "SCI")
+        @test result[1] isa WCSTransform
+        @test result[2] isa Tuple
     end
 end
 

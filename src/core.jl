@@ -14,10 +14,10 @@ Reprojects image data to a new projection using interpolation.
            0: Nearest-neighbor
            1: Linear
            2: Quadratic
-- `hdu_in`: Used to specify HDU number when giving input as a vector of HDUs or name of FITS file.
-- `hdu_out:` Used to specify HDU number when giving output projection as a vector of HDUs or name of FITS file.
+- `hdu_in`: Used to select the HDU when giving input as a vector of HDUs or name of FITS file, either a 1-based integer index or an `EXTNAME` string or symbol.
+- `hdu_out:` Used to select the HDU when giving output projection as a vector of HDUs or name of FITS file, either a 1-based integer index or an `EXTNAME` string or symbol.
 """
-function reproject(input_data, output_projection; shape_out = nothing, order::Int = 1, hdu_in::Int = 1, hdu_out::Int = 1)
+function reproject(input_data, output_projection; shape_out = nothing, order::Int = 1, hdu_in::HDUSelector = 1, hdu_out::HDUSelector = 1)
     if input_data isa HDU || input_data isa Tuple{AbstractArray, WCSTransform}
         array_in, wcs_out = parse_input_data(input_data)
     else
