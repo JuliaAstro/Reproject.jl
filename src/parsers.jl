@@ -20,7 +20,9 @@ function parse_input_data(input_data::Tuple{AbstractArray, WCSTransform})
 end
 
 function parse_input_data(input_data::String, hdu_in)
-    return parse_input_data(FITS(input_data), hdu_in)
+    return FITS(input_data) do f
+        parse_input_data(f, hdu_in)
+    end
 end
 
 function parse_input_data(input_data::FITS, hdu_in)
@@ -65,7 +67,9 @@ function parse_output_projection(output_projection::ImageHDU, shape_out)
 end
 
 function parse_output_projection(output_projection::String, hdu_number)
-    parse_output_projection(FITS(output_projection), hdu_number)
+    return FITS(output_projection) do f
+        parse_output_projection(f, hdu_number)
+    end
 end
 
 function parse_output_projection(output_projection::FITS, hdu_number)

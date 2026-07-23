@@ -3,6 +3,9 @@ uuid = "d1dcc2e6-806e-11e9-2897-3f99785db2ae"
 authors = ["Mosè Giordano", "Rohit Kumar"]
 version = "0.3.3"
 
+[workspace]
+projects = ["test", "docs"]
+
 [deps]
 FITSIO = "525bcba6-941b-5504-bd06-fd0dc1a4d2eb"
 Interpolations = "a98d9a8b-a2ab-59e6-89dd-64a1c18fca59"
@@ -14,4 +17,4 @@ FITSIO = "0.15, 0.16, 0.17"
 Interpolations = "0.13, 0.14, 0.15, 0.16"
 SkyCoords = "0.4, 1"
 WCS = "0.5, 0.6"
-julia = "1.6"
+julia = "1.10"

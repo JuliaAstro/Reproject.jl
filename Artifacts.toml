@@ -1,0 +1,10 @@
+[galactic_center]
+git-tree-sha1 = "1cbf2c664582ca02d5ad0589c537e375a4edd671"
+# This data is only used by the tests and the documentation build, which install
+# it on demand via `ensure_artifact_installed`. `lazy = true` keeps Pkg from
+# downloading it automatically for every user who installs the package.
+lazy = true
+
+    [[galactic_center.download]]
+    sha256 = "52180a0661485f3131638396d3a95d1e1b8dfb3499b0dab05f6e4bd45ebc0b89"
+    url = "https://github.com/JuliaAstro/Reproject.jl/releases/download/data-v1/galactic_center.tar.gz"

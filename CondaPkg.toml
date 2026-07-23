@@ -1,6 +1,4 @@
-channels = ["astropy", "conda-forge"]
-
-[deps]
-python = "=3.7"
-astropy = "=4.3"
-reproject = "=0.5"
+[dev.deps]
+python = ">=3.11"
+astropy = ">=7"
+reproject = ">=0.14"
