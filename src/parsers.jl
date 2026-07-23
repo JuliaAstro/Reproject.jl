@@ -1,18 +1,18 @@
 """
-    parse_input_data(input_data::ImageHDU)
+    parse_input_data(input_data::HDU)
     parse_input_data(input_data::Tuple{AbstractArray, WCSTransform})
     parse_input_data(input_data::String, hdu_in)
-    parse_input_data(input_data::FITS, hdu_in)
+    parse_input_data(input_data::AbstractVector{<:HDU}, hdu_in)
 
 Parse input data and returns an Array and WCS object.
 
 # Arguments
 - `input_data`: image to reproject which can be name of a FITS file,
-                an ImageHDU or a FITS file.
+                an HDU or a vector of HDUs as returned by `FITSFiles.fits`.
 - `hdu_in`: used to set HDU to use when more than one HDU is present.
 """
-function parse_input_data(input_data::ImageHDU)
-    return read(input_data), WCS.from_header(read_header(input_data, String))[1]
+function parse_input_data(input_data::HDU)
+    return input_data.data, WCS(input_data)
 end
 
 function parse_input_data(input_data::Tuple{AbstractArray, WCSTransform})
@@ -20,30 +20,25 @@ function parse_input_data(input_data::Tuple{AbstractArray, WCSTransform})
 end
 
 function parse_input_data(input_data::String, hdu_in)
-    return FITS(input_data) do f
-        parse_input_data(f, hdu_in)
-    end
+    return parse_input_data(fits(input_data), hdu_in)
 end
 
-function parse_input_data(input_data::FITS, hdu_in)
+function parse_input_data(input_data::AbstractVector{<:HDU}, hdu_in)
     return parse_input_data(input_data[hdu_in])
 end
 
 
-# TODO: extend support for passing FITSHeader when FITSHeader to WCSTransform support is possible.
-
-
 """
     parse_output_projection(output_projection::WCSTransform, shape_out)
-    parse_output_projection(output_projection::ImageHDU; shape_out)
+    parse_output_projection(output_projection::HDU, shape_out)
     parse_output_projection(output_projection::String, hdu_number)
-    parse_output_projection(output_projection::FITS, hdu_number)
+    parse_output_projection(output_projection::AbstractVector{<:HDU}, hdu_number)
 
 Parse output projection and returns a WCS object and shape of output.
 
 # Arguments
 - `output_projection`: WCS information about the image to be reprojected which can be
-                       name of a FITS file, an ImageHDU or WCSTransform.
+                       name of a FITS file, an HDU, a vector of HDUs or a WCSTransform.
 - `shape_out`: shape of the output image.
 - `hdu_number`: specifies HDU number when file name is given as input.
 """
@@ -55,8 +50,8 @@ function parse_output_projection(output_projection::WCSTransform, shape_out)
     return output_projection, shape_out
 end
 
-function parse_output_projection(output_projection::ImageHDU, shape_out)
-    wcs_out = WCS.from_header(read_header(output_projection, String))[1]
+function parse_output_projection(output_projection::HDU, shape_out)
+    wcs_out = WCS(output_projection)
     if shape_out === nothing
         shape_out = size(output_projection)
     end
@@ -67,19 +62,14 @@ function parse_output_projection(output_projection::ImageHDU, shape_out)
 end
 
 function parse_output_projection(output_projection::String, hdu_number)
-    return FITS(output_projection) do f
-        parse_output_projection(f, hdu_number)
-    end
+    return parse_output_projection(fits(output_projection), hdu_number)
 end
 
-function parse_output_projection(output_projection::FITS, hdu_number)
-    wcs_out = WCS.from_header(read_header(output_projection[hdu_number], String))[1]
-
-    if output_projection[hdu_number] isa ImageHDU
-        shape_out = size(output_projection[hdu_number])
-    else
-        throw(ArgumentError("Given FITS file doesn't have ImageHDU"))
+function parse_output_projection(output_projection::AbstractVector{<:HDU}, hdu_number)
+    hdu = output_projection[hdu_number]
+    if !(hdu isa HDU{Primary} || hdu isa HDU{Image})
+        throw(ArgumentError("Given FITS file doesn't have an image HDU"))
     end
 
-    return wcs_out, shape_out
+    return WCS(hdu), size(hdu)
 end

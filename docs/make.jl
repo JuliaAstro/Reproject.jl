@@ -1,6 +1,12 @@
 using Documenter
+using DocumenterInterLinks
 using Reproject
 using Documenter.Remotes: GitHub
+
+links = InterLinks(
+    "AstroImages" => "https://juliaastro.org/AstroImages/stable/",
+    "FITSFiles" => "https://juliaastro.org/FITSFiles/stable/",
+)
 
 makedocs(;
     sitename = "Reproject.jl",
@@ -17,6 +23,7 @@ makedocs(;
     repo = GitHub("JuliaAstro/Reproject.jl"),
     # Doctests are run as part of the test suite instead (test/doctest.jl)
     doctest   = false,
+    plugins   = [links],
 )
 
 deploydocs(;

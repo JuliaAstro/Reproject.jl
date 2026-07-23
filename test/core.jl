@@ -3,8 +3,8 @@
     gc_msx_e = joinpath(data, "gc_msx_e.fits")
     gc_2mass_k = joinpath(data, "gc_2mass_k.fits")
 
-    imgin = FITS(gc_msx_e)    # project this
-    imgout = FITS(gc_2mass_k) # into this coordinate
+    imgin = fits(gc_msx_e)    # project this
+    imgout = fits(gc_2mass_k) # into this coordinate
 
     hdu1 = astropy.io.fits.open(gc_2mass_k)[0]
     hdu2 = astropy.io.fits.open(gc_msx_e)[0]
@@ -31,26 +31,20 @@
     @test isapprox(reproject(imgin[1], imgout[1], shape_out = (1000,1000))[1]',
                    pyconvert(Matrix, rp.reproject_interp(hdu2, astropy.wcs.WCS(hdu1.header), shape_out = (1000,1000))[0]), nans = true, rtol = 1e-7)
 
-    wcs = WCSTransform(2; ctype = ["RA---AIR", "DEC--AIR"], radesys = "UNK")
+    wcs = WCS(2; ctype = ["RA---AIR", "DEC--AIR"], radesys = "UNK")
     @test_throws ArgumentError reproject(imgin, wcs, shape_out = (100,100))
 
-    fname = tempname() * ".fits"
-    f = FITS(fname, "w")
-    inhdr = FITSHeader(["CTYPE1", "CTYPE2", "RADESYS", "FLTKEY", "INTKEY", "BOOLKEY", "STRKEY", "COMMENT",
-                        "HISTORY"],
-                       ["RA---TAN", "DEC--TAN", "UNK", 1.0, 1, true, "string value", nothing, nothing],
-                       ["",
-                        "",
-                        "",
-                        "floating point keyword",
-                        "",
-                        "boolean keyword",
-                        "string value",
-                        "this is a comment",
-                        "this is a history"])
+    inhdr = [Card("CTYPE1", "RA---TAN"),
+             Card("CTYPE2", "DEC--TAN"),
+             Card("RADESYS", "UNK"),
+             Card("FLTKEY", 1.0, "floating point keyword"),
+             Card("INTKEY", 1),
+             Card("BOOLKEY", true, "boolean keyword"),
+             Card("STRKEY", "string value", "string value"),
+             Card("COMMENT", "this is a comment"),
+             Card("HISTORY", "this is a history")]
 
     indata = reshape(Float32[1:100;], 5, 20)
-    write(f, indata; header=inhdr)
-    @test_throws ArgumentError reproject(f[1], imgin, shape_out = (100,100))
-    close(f)
+    hdu = HDU(indata, inhdr)
+    @test_throws ArgumentError reproject(hdu, imgin, shape_out = (100,100))
 end
