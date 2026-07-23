@@ -1,26 +1,7 @@
-function download_dep(orig, dest, hash)
-    dest_file = joinpath("data", dest)
-    if isfile(dest_file)
-        dest_hash = open(dest_file, "r") do f
-            bytes2hex(sha256(f))
-        end
-        if dest_hash == hash
-            return nothing
-        end
-    end
-    mkpath("data")
-    download(orig, dest_file)
-    return nothing
-end
-
 @testset "reproject-core" begin
-    download_dep("https://www.astropy.org/astropy-data/galactic_center/gc_2mass_k.fits", "gc_2mass_k.fits",
-                 "763ef344df3ac8fa80ff46f00ca1ec59946ca3f99502562d6fcfb73320b1cec3")
-    download_dep("https://www.astropy.org/astropy-data/galactic_center/gc_msx_e.fits", "gc_msx_e.fits",
-                 "3687fb3763911825f981e74b6a9b82c0e618f7e592b1e0cb17e2c63164e28cd6")
-
-    gc_msx_e = joinpath(@__DIR__, "data", "gc_msx_e.fits")
-    gc_2mass_k = joinpath(@__DIR__, "data", "gc_2mass_k.fits")
+    data = ensure_artifact_installed("galactic_center", joinpath(pkgdir(Reproject), "Artifacts.toml"))
+    gc_msx_e = joinpath(data, "gc_msx_e.fits")
+    gc_2mass_k = joinpath(data, "gc_2mass_k.fits")
 
     imgin = FITS(gc_msx_e)    # project this
     imgout = FITS(gc_2mass_k) # into this coordinate

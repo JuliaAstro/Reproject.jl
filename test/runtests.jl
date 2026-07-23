@@ -2,8 +2,7 @@ using Reproject
 using Test
 using PythonCall
 using FITSIO, WCS
-using SHA: sha256
-using Downloads: download
+using Pkg.Artifacts: ensure_artifact_installed
 
 rp = pyimport("reproject")
 astropy = pyimport("astropy")

@@ -14,7 +14,7 @@ makedocs(;
         "index.md",
         "api-reference.md",
     ],
-    repo = GitHub("https://github.com/juliaAstro/Reproject.jl"),
+    repo = GitHub("JuliaAstro/Reproject.jl"),
     # Doctests are run as part of the test suite instead (test/doctest.jl)
     doctest   = false,
 )
