@@ -5,10 +5,12 @@ using FITSWCS: FITSWCS, WCS, WCSTransform, pixel_to_world, world_to_pixel
 using Interpolations:
     BSpline,
     Constant,
+    Flat,
     InPlace,
     Linear,
     OnCell,
     Quadratic,
+    extrapolate,
     interpolate
 using SkyCoords: SkyCoords, FK5Coords, GalCoords, ICRSCoords
 
