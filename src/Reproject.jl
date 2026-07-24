@@ -1,6 +1,7 @@
 module Reproject
 
-using FITSIO: FITS, ImageHDU, read_header
+using FITSFiles: FITSFiles, HDU, Image, Primary, fits
+using FITSWCS: FITSWCS, WCS, WCSTransform, pixel_to_world, world_to_pixel
 using Interpolations:
     BSpline,
     Constant,
@@ -12,7 +13,6 @@ using Interpolations:
     extrapolate,
     interpolate
 using SkyCoords: SkyCoords, FK5Coords, GalCoords, ICRSCoords
-using WCS: WCS, WCSTransform, pix_to_world, world_to_pix
 
 include("parsers.jl")
 include("utils.jl")

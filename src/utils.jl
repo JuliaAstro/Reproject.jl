@@ -1,22 +1,20 @@
+# TODO: Consider upstreaming this as an extension to FITSWCS.jl
 """
-    wcs_to_celestial_frame(wcs::WCSTransform)
+    celestial_frame(wcs::WCSTransform)
 
-Returns the reference frame of a WCSTransform.
-The reference frame supported in Julia are FK5, ICRS and Galactic.
+The `SkyCoords` coordinate type corresponding to the celestial reference frame of a WCS transform: `ICRSCoords`, `FK5Coords{equinox}`, or `GalCoords`.
+
+Throws an `ArgumentError` for frames without a `SkyCoords` counterpart (e.g., FK4 or ITRS).
 """
-function wcs_to_celestial_frame(wcs::WCSTransform)
+function celestial_frame(wcs::WCSTransform)
     radesys = wcs.radesys
-
-    xcoord = wcs.ctype[1][1:4]
-    ycoord = wcs.ctype[2][1:4]
-
-    if radesys == ""
-        if xcoord == "GLON" && ycoord == "GLAT"
-            radesys = "Gal"
-        elseif xcoord == "TLON" && ycoord == "TLAT"
-            radesys = "ITRS"
-        end
+    if radesys == "ICRS"
+        return ICRSCoords
+    elseif radesys == "FK5"
+        return FK5Coords{wcs.equinox}
+    elseif radesys == "" && startswith(wcs.ctype[1], "GLON") && startswith(wcs.ctype[2], "GLAT")
+        return GalCoords
     end
-
-    return radesys
+    frame = isempty(radesys) ? join(wcs.ctype, ", ") : radesys
+    throw(ArgumentError("WCS celestial frame ($frame) is not supported by SkyCoords"))
 end

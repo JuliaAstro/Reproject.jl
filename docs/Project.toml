@@ -1,13 +1,34 @@
 [deps]
-ColorSchemes = "35d6a980-a343-548e-a6ea-1d62b119f2f4"
+AstroAngles = "5c4adb95-c1fc-4c53-b4ea-2a94080c53d2"
+AstroImages = "fe3fc30c-9b16-11e9-1c73-17dabf39f4ad"
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+ComputePipeline = "95dc2771-c249-4cd0-9c9f-1f3b4330693c"
+DimensionalData = "0703355e-b756-11e9-17c0-8b28908087d0"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
-FITSIO = "525bcba6-941b-5504-bd06-fd0dc1a4d2eb"
+DocumenterInterLinks = "d12716ef-a0f6-4df4-a9f1-a5a34e75c656"
+FITSFiles = "358a0a88-3548-4ad6-b652-8bdbf64af8e5"
 ImageCore = "a09fc81d-aa75-5fe9-8630-4744c3626534"
 ImageIO = "82e4d734-157c-48bb-816b-45c225c6df19"
 ImageShow = "4e3cecfd-b093-5904-9786-8bbb286a6a31"
+Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Reproject = "d1dcc2e6-806e-11e9-2897-3f99785db2ae"
-Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+
+# Temporary until releases with the required changes are registered. Pkg only
+# applies the [sources] of the active project, so AstroImages' own unregistered
+# requirements from its `makie` branch (AstroAngles 0.3, the DimensionalData
+# fork, and the pre-release Makie 0.25 stack) must be mirrored here, matching
+# that branch's own [sources].
+[sources]
+AstroAngles = {url = "https://github.com/JuliaAstro/AstroAngles.jl"}
+AstroImages = {url = "https://github.com/JuliaAstro/AstroImages.jl", rev = "makie"}
+CairoMakie = {url = "https://github.com/MakieOrg/Makie.jl", rev = "ff/breaking-0.25", subdir = "CairoMakie"}
+ComputePipeline = {url = "https://github.com/MakieOrg/Makie.jl", rev = "ff/breaking-0.25", subdir = "ComputePipeline"}
+DimensionalData = {url = "https://github.com/icweaver/DimensionalData.jl", rev = "makie-0.25"}
+FITSFiles = {url = "https://github.com/JuliaAstro/FITSFiles.jl", rev = "hdu-size"}
+Makie = {url = "https://github.com/MakieOrg/Makie.jl", rev = "ff/breaking-0.25", subdir = "Makie"}
 
 [compat]
+AstroImages = "0.6"
 Documenter = "1"
+DocumenterInterLinks = "1"
