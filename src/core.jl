@@ -37,7 +37,6 @@ function reproject(input_data, output_projection; shape_out = nothing, order::In
     end
 
     img_out = fill(NaN, shape_out)
-    array_in = pad_edges(array_in)
     itp = interpolator(array_in, order)
     shape_in = size(array_in)
 
@@ -68,8 +67,8 @@ function reproject(input_data, output_projection; shape_out = nothing, order::In
 
             pix_coord_out = world_to_pix(wcs_out, [rad2deg(SkyCoords.lon(coord_out)), rad2deg(SkyCoords.lat(coord_out))])
 
-            if 0.5 <= pix_coord_out[1] <= shape_in[1] - 1.5 && 0.5 <= pix_coord_out[2] <= shape_in[2] - 1.5
-                img_out[i,j] = itp(pix_coord_out[1] + 1, pix_coord_out[2] + 1)
+            if 0.5 <= pix_coord_out[1] <= shape_in[1] + 0.5 && 0.5 <= pix_coord_out[2] <= shape_in[2] + 0.5
+                img_out[i,j] = itp(pix_coord_out[1], pix_coord_out[2])
             end
         end
     end
@@ -79,12 +78,16 @@ end
 
 
 """
-    interpolator(array_in, order::Int)
+    interpolator(array_in, order::Int; padding = Flat())
 
 Returns an interpolator with the given array and order of interpolation.
+
+`padding` is the Interpolations.jl boundary condition used for evaluations that
+fall in the outer half-pixel border of the array, replacing the edge padding
+that was previously applied to a copy of the input.
 """
-function interpolator(array_in::AbstractArray, order::Int)
-   if order == 0
+function interpolator(array_in::AbstractArray, order::Int; padding = Flat())
+    if order == 0
         itp = interpolate(array_in, BSpline(Constant()))
     elseif order == 1
         itp = interpolate(array_in, BSpline(Linear()))
@@ -92,5 +95,5 @@ function interpolator(array_in::AbstractArray, order::Int)
         itp = interpolate(array_in, BSpline(Quadratic(InPlace(OnCell()))))
     end
 
-    return itp
+    return extrapolate(itp, padding)
 end
