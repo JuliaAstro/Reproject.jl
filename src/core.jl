@@ -9,7 +9,7 @@ Reprojects image data to a new projection using interpolation.
                 name of a FITS file or a tuple of image matrix and WCSTransform.
 - `output_projection`: Frame in which data is reprojected.
                        Frame can be taken from WCSTransform object, HDU, vector of HDUs or name of FITS file.
-- `shape_out`: Shape of image after reprojection.
+- `shape_out`: Shape of image after reprojection; defaults to the data size of the selected HDU when the output projection is given as an HDU, vector of HDUs, or name of FITS file.
 - `order`: Order of interpolation.
            0: Nearest-neighbor
            1: Linear
@@ -18,44 +18,11 @@ Reprojects image data to a new projection using interpolation.
 - `hdu_out:` Used to select the HDU when giving output projection as a vector of HDUs or name of FITS file, either a 1-based integer index or an `EXTNAME` string or symbol.
 """
 function reproject(input_data, output_projection; shape_out = nothing, order::Int = 1, hdu_in::HDUSelector = 1, hdu_out::HDUSelector = 1)
-    if input_data isa HDU || input_data isa Tuple{AbstractArray, WCSTransform}
-        array_in, wcs_out = parse_input_data(input_data)
-    else
-        array_in, wcs_out = parse_input_data(input_data, hdu_in)
-    end
+    array_in, wcs_source = parse_input_data(input_data, hdu_in)
+    wcs_target, shape_out = parse_output_projection(output_projection, shape_out; hdu_out)
 
-    if output_projection isa AbstractVector{<:HDU} || output_projection isa String
-        wcs_in, shape_out = parse_output_projection(output_projection, hdu_out)
-    else
-        wcs_in, shape_out = parse_output_projection(output_projection, shape_out)
-    end
-
-    type_in = wcs_to_celestial_frame(wcs_in)
-    type_out = wcs_to_celestial_frame(wcs_out)
-
-    if type_in == type_out && shape_out === nothing
-        return array_in
-    end
-
-    frame_in = if type_in == "ICRS"
-        ICRSCoords
-    elseif type_in == "Gal"
-        GalCoords
-    elseif type_in == "FK5"
-        FK5Coords{wcs_in.equinox}
-    else
-        throw(ArgumentError("Unsupported output WCS coordinate type"))
-    end
-
-    frame_out = if type_out == "ICRS"
-        ICRSCoords
-    elseif type_out == "Gal"
-        GalCoords
-    elseif type_out == "FK5"
-        FK5Coords{wcs_out.equinox}
-    else
-        throw(ArgumentError("Unsupported input WCS coordinate type"))
-    end
+    frame_source = celestial_frame(wcs_source)
+    frame_target = celestial_frame(wcs_target)
 
     img_out = fill(NaN, shape_out)
     itp = interpolator(array_in, order)
@@ -63,16 +30,16 @@ function reproject(input_data, output_projection; shape_out = nothing, order::In
 
     for i in 1:shape_out[1]
         for j in 1:shape_out[2]
-            pix_coord_in = [float(i), float(j)]
-            world_coord_in = pixel_to_world(wcs_in, pix_coord_in)
+            pix_coord_target = [float(i), float(j)]
+            world_coord_target = pixel_to_world(wcs_target, pix_coord_target)
 
-            coord_in = frame_in(deg2rad(world_coord_in[1]), deg2rad(world_coord_in[2]))
-            coord_out = convert(frame_out, coord_in)
+            coord_target = frame_target(deg2rad(world_coord_target[1]), deg2rad(world_coord_target[2]))
+            coord_source = convert(frame_source, coord_target)
 
-            pix_coord_out = world_to_pixel(wcs_out, [rad2deg(SkyCoords.lon(coord_out)), rad2deg(SkyCoords.lat(coord_out))])
+            pix_coord_source = world_to_pixel(wcs_source, [rad2deg(SkyCoords.lon(coord_source)), rad2deg(SkyCoords.lat(coord_source))])
 
-            if 0.5 <= pix_coord_out[1] <= shape_in[1] + 0.5 && 0.5 <= pix_coord_out[2] <= shape_in[2] + 0.5
-                img_out[i,j] = itp(pix_coord_out[1], pix_coord_out[2])
+            if 0.5 <= pix_coord_source[1] <= shape_in[1] + 0.5 && 0.5 <= pix_coord_source[2] <= shape_in[2] + 0.5
+                img_out[i,j] = itp(pix_coord_source[1], pix_coord_source[2])
             end
         end
     end

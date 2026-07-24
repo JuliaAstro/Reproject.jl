@@ -63,7 +63,7 @@ using Reproject: parse_input_data, parse_output_projection
         @test result[1] isa Array
         @test result[2] isa WCSTransform
 
-        result = parse_output_projection(fname, "SCI")
+        result = parse_output_projection(fname; hdu_out = "SCI")
         @test result[1] isa WCSTransform
         @test result[2] isa Tuple
     end
@@ -90,9 +90,12 @@ end
     end
 
     @testset "String filename" begin
-        result = parse_output_projection(fname, 1)
+        result = parse_output_projection(fname)
         @test result[1] isa WCSTransform
         @test result[2] isa Tuple
+
+        result = parse_output_projection(fname, (12, 12))
+        @test result[2] == (12, 12)
     end
 
     wcs = WCS(2;

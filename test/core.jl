@@ -31,6 +31,10 @@
     @test isapprox(reproject(imgin[1], imgout[1], shape_out = (1000,1000))[1]',
                    pyconvert(Matrix, rp.reproject_interp(hdu2, astropy.wcs.WCS(hdu1.header), shape_out = (1000,1000))[0]), nans = true, rtol = 1e-7)
 
+    # shape_out used to be silently ignored when the output projection was
+    # given as a file name or vector of HDUs
+    @test size(reproject(gc_msx_e, gc_2mass_k, shape_out = (100,100), order = 0)[1]) == (100, 100)
+
     wcs = WCS(2; ctype = ["RA---AIR", "DEC--AIR"], radesys = "UNK")
     @test_throws ArgumentError reproject(imgin, wcs, shape_out = (100,100))
 

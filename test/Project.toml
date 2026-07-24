@@ -6,6 +6,7 @@ FITSWCS = "b9a10f0d-c86c-4e01-8e2e-1f1d7c5fb3f2"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 PythonCall = "6099a3de-0909-46bc-b1f4-468b9a2dfc0d"
 Reproject = "d1dcc2e6-806e-11e9-2897-3f99785db2ae"
+SkyCoords = "fc659fc5-75a3-5475-a2ea-3da92c065361"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
