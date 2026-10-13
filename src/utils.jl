@@ -1,22 +1,32 @@
+# TODO: Consider upstreaming this as an extension to FITSWCS.jl
 """
-    wcs_to_celestial_frame(wcs::WCSTransform)
+    celestial_frame(wcs::WCSTransform)
+    celestial_frame(wcs::SlicedWCSTransform)
 
-Returns the reference frame of a WCSTransform.
-The reference frame supported in Julia are FK5, ICRS and Galactic.
+The `SkyCoords` coordinate type corresponding to the celestial reference frame of a WCS transform: `ICRSCoords`, `FK5Coords{equinox}`, or `GalCoords`.
+
+A `SlicedWCSTransform` (e.g., of a cutout, or of a single channel of a data cube) takes the frame of its parent, and must keep exactly the two celestial axes of its parent.
+
+Throws an `ArgumentError` for frames without a `SkyCoords` counterpart (e.g., FK4 or ITRS).
 """
-function wcs_to_celestial_frame(wcs::WCSTransform)
+function celestial_frame(wcs::WCSTransform)
     radesys = wcs.radesys
-
-    xcoord = wcs.ctype[1][1:4]
-    ycoord = wcs.ctype[2][1:4]
-
-    if radesys == ""
-        if xcoord == "GLON" && ycoord == "GLAT"
-            radesys = "Gal"
-        elseif xcoord == "TLON" && ycoord == "TLAT"
-            radesys = "ITRS"
-        end
+    if radesys == "ICRS"
+        return ICRSCoords
+    elseif radesys == "FK5"
+        return FK5Coords{wcs.equinox}
+    elseif radesys == "" && startswith(wcs.ctype[1], "GLON") && startswith(wcs.ctype[2], "GLAT")
+        return GalCoords
     end
+    frame = isempty(radesys) ? join(wcs.ctype, ", ") : radesys
+    throw(ArgumentError("WCS celestial frame ($frame) is not supported by SkyCoords"))
+end
 
-    return radesys
+function celestial_frame(wcs::SlicedWCSTransform)
+    p = wcs.parent
+    if Set(wcs.world_keep) != Set((p.lon_axis, p.lat_axis))
+        kept = join(p.ctype[wcs.world_keep], ", ")
+        throw(ArgumentError("Sliced WCS must keep exactly the two celestial axes of its parent, but keeps: $kept"))
+    end
+    return celestial_frame(p)
 end

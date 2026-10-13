@@ -1,7 +1,7 @@
 using Reproject
 using Test
 using PythonCall
-using FITSIO, WCS
+using FITSFiles, FITSWCS
 using Pkg.Artifacts: ensure_artifact_installed
 
 rp = pyimport("reproject")
