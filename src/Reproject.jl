@@ -1,7 +1,7 @@
 module Reproject
 
 using FITSFiles: FITSFiles, HDU, Image, Primary, fits
-using FITSWCS: FITSWCS, WCS, WCSTransform, pixel_to_world, world_to_pixel
+using FITSWCS: FITSWCS, SlicedWCSTransform, WCS, WCSTransform, pixel_to_world, world_to_pixel
 using Interpolations:
     BSpline,
     Constant,

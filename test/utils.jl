@@ -33,3 +33,12 @@ using SkyCoords: ICRSCoords, GalCoords, FK5Coords
     @test_throws ArgumentError celestial_frame(wcs5)
     @test_throws ArgumentError celestial_frame(wcs6)
 end
+
+@testset "celestial frame from sliced WCS" begin
+    cube = WCS(3; ctype = ["GLON-TAN", "GLAT-TAN", "VRAD"])
+
+    # Cutout of a single channel: keeps both celestial axes
+    @test celestial_frame(slice_wcs(cube, 10:20, 5:15, 3)) == GalCoords
+    # Position-velocity slice: keeps longitude and velocity
+    @test_throws ArgumentError celestial_frame(slice_wcs(cube, :, 7, :))
+end

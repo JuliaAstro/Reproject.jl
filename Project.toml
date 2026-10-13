@@ -17,7 +17,7 @@ SkyCoords = "fc659fc5-75a3-5475-a2ea-3da92c065361"
 # Requires Julia 1.11+ to take effect.
 [sources]
 FITSFiles = {url = "https://github.com/JuliaAstro/FITSFiles.jl", rev = "hdu-size"}
-FITSWCS = {url = "https://github.com/JuliaAstro/FITSWCS.jl", rev = "radesys-defaults"}
+FITSWCS = {url = "https://github.com/JuliaAstro/FITSWCS.jl"}
 # The registered SkyCoords caps its Makie extension below the pre-release
 # Makie 0.25 used by the docs; this branch widens it.
 SkyCoords = {url = "https://github.com/JuliaAstro/SkyCoords.jl", rev = "makie-v0.25"}
