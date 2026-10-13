@@ -16,4 +16,4 @@ PythonCall = "0.8, 0.9"
 # sync with the root Project.toml.
 [sources]
 FITSFiles = {url = "https://github.com/JuliaAstro/FITSFiles.jl", rev = "hdu-size"}
-FITSWCS = {url = "https://github.com/JuliaAstro/FITSWCS.jl", rev = "radesys-defaults"}
+FITSWCS = {url = "https://github.com/JuliaAstro/FITSWCS.jl"}
